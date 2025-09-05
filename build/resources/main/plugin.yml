@@ -1,0 +1,16 @@
+name: GachaSystem
+version: '1.0-SNAPSHOT'
+main: org.hunseong.gachaSystem.GachaSystem
+api-version: '1.21'
+author: Hunseong
+description: i love gacha
+
+commands:
+  가차:
+    description: 가차 시스템 기본 명령어
+    usage: /<command> [subcommand] [args...]
+
+permissions:
+  gacha.admin:
+    description: 가차 관리자 권한
+    default: op
