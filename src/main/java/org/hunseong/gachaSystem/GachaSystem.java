@@ -16,6 +16,7 @@ import org.hunseong.gachaSystem.gui.RewardPreviewGui;
 import org.hunseong.gachaSystem.gui.RewardSettingGui;
 import org.hunseong.gachaSystem.listener.DataStorageEvent;
 import org.hunseong.gachaSystem.listener.ClickIconEvent;
+import org.hunseong.gachaSystem.util.HexColor;
 import org.hunseong.gachaSystem.util.ItemBase64;
 
 public final class GachaSystem extends JavaPlugin implements Listener{
@@ -33,6 +34,7 @@ public final class GachaSystem extends JavaPlugin implements Listener{
     private static PlayerBoardData playerBoardData;
 
     private static ItemBase64 itemBase64;
+    private static HexColor hexColor;
 
     @Override
     public void onEnable() {
@@ -45,6 +47,7 @@ public final class GachaSystem extends JavaPlugin implements Listener{
         resetRewardBoard = new ResetRewardBoard();
         playerBoardData = new PlayerBoardData();
         itemBase64 = new ItemBase64();
+        hexColor = new HexColor();
         saveDefaultConfig();
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new DataStorageEvent(), this);
@@ -99,5 +102,9 @@ public final class GachaSystem extends JavaPlugin implements Listener{
 
     public static ItemBase64 getItemBase64() {
         return itemBase64;
+    }
+
+    public static HexColor getHexColor() {
+        return hexColor;
     }
 }

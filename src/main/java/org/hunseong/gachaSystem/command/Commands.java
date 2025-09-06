@@ -1,6 +1,7 @@
 package org.hunseong.gachaSystem.command;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.command.Command;
@@ -52,6 +53,9 @@ public class Commands implements CommandExecutor, TabCompleter {
             case "보상설정":
                 handleRewardSettingCommand(player, args);
                 break;
+            case "reload":
+                handleReloadCommand(player);
+                break;
             default:
                 player.sendMessage("§e/가차 설정 [플레이어] [값]");
                 player.sendMessage("§e/가차 지급 [플레이어] [값]");
@@ -68,7 +72,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             player.sendMessage("§e/가차 설정 [플레이어] [값]");
             return;
         }
-        Player target = Bukkit.getPlayer(args[1]);
+        OfflinePlayer target = Bukkit.getPlayer(args[1]);
         if (target == null) {
             player.sendMessage("§c해당 플레이어를 찾을 수 없습니다.");
             return;
@@ -87,7 +91,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             player.sendMessage("§e/가차 지급 [플레이어] [값]");
             return;
         }
-        Player target = Bukkit.getPlayer(args[1]);
+        OfflinePlayer target = Bukkit.getPlayer(args[1]);
         if (target == null) {
             player.sendMessage("§c해당 플레이어를 찾을 수 없습니다.");
             return;
@@ -107,7 +111,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             player.sendMessage("§e/가차 차감 [플레이어] [값]");
             return;
         }
-        Player target = Bukkit.getPlayer(args[1]);
+        OfflinePlayer target = Bukkit.getPlayer(args[1]);
         if (target == null) {
             player.sendMessage("§c해당 플레이어를 찾을 수 없습니다.");
             return;
@@ -128,7 +132,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             player.sendMessage("§e/가차 초기화 [플레이어]");
             return;
         }
-        Player target = Bukkit.getPlayer(args[1]);
+        OfflinePlayer target = Bukkit.getPlayer(args[1]);
         if (target == null) {
             player.sendMessage("§c해당 플레이어를 찾을 수 없습니다.");
             return;
@@ -151,10 +155,15 @@ public class Commands implements CommandExecutor, TabCompleter {
         }
     }
 
+    private void handleReloadCommand(Player player) {
+        GachaSystem.getInstance().reloadConfig();
+        player.sendMessage("§aconfig 파일을 리로드했습니다.");
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1 && sender.hasPermission("gacha.admin")) {
-            return Arrays.asList("설정", "지급", "차감", "초기화", "보상설정").stream()
+            return Arrays.asList("설정", "지급", "차감", "초기화", "보상설정", "reload").stream()
                     .filter(s -> s.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }

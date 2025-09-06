@@ -1,5 +1,6 @@
 package org.hunseong.gachaSystem.listener;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,7 +19,12 @@ public class ClickIconEvent implements Listener {
         if (viewTitle.contains("뽑기판") || viewTitle.contains("뽑기판 보상 미리보기 - ")) {
             event.setCancelled(true);
             if (!viewTitle.equals("뽑기판")) return;
-
+            try {
+                player.getLocation().getWorld().playSound(player.getLocation(), Sound.valueOf(GachaSystem.getInstance().getConfig().getString("click-sounds", "BLOCK_NOTE_BLOCK_PLING")), 1.0F, 1.0F);
+            } catch (IllegalArgumentException e) {
+                player.sendMessage("§c설정 파일에 잘못된 사운드 이름이 설정되었습니다.");
+                e.printStackTrace();
+            }
             List<Integer> lockedSlots = GachaSystem.getPlayerBoardData().getlockedSlots(player);
             if (lockedSlots.contains(event.getSlot() - 18)) {
                 GachaSystem.getGiveReward().excuteGacha(player, event.getSlot());
@@ -30,7 +36,7 @@ public class ClickIconEvent implements Listener {
                     GachaSystem.getRewardPreviewGui().openRewardPreviewGui(player, "SSS");
                     break;
                 case 7:
-                    GachaSystem.getRewardPreviewGui().openRewardPreviewGui(player, "SSS");
+                    GachaSystem.getRewardPreviewGui().openRewardPreviewGui(player, "SS");
                     break;
                 case 6:
                     GachaSystem.getRewardPreviewGui().openRewardPreviewGui(player, "S");

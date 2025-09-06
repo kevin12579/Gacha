@@ -1,5 +1,6 @@
 package org.hunseong.gachaSystem.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,6 +9,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.hunseong.gachaSystem.GachaSystem;
 import org.hunseong.gachaSystem.database.DatabaseManager;
 
 import java.io.ByteArrayOutputStream;
@@ -24,9 +26,13 @@ public class DataStorageEvent implements Listener {
         Player player = (Player) event.getPlayer();
         Inventory inventory = event.getInventory();
         String title = inventory.getViewers().get(0).getOpenInventory().getTitle();
-
+        if(title.contains("뽑기판 보상 미리보기 - ")) {
+            Bukkit.getScheduler().runTask(GachaSystem.getInstance(), () -> {
+                GachaSystem.getMainGui().openMainGUI(player);
+            });
+            return;
+        }
         if (!title.contains("가차 보상설정 - ")) return;
-
         String grade = title.replace("가차 보상설정 - ", "");
         List<ItemStack> gradeItems = new ArrayList<>();
 
