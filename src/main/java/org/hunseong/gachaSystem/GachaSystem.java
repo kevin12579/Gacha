@@ -1,5 +1,6 @@
 package org.hunseong.gachaSystem;
 
+import org.bukkit.entity.Item;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import org.bukkit.Bukkit;
@@ -15,8 +16,7 @@ import org.hunseong.gachaSystem.gui.RewardPreviewGui;
 import org.hunseong.gachaSystem.gui.RewardSettingGui;
 import org.hunseong.gachaSystem.listener.DataStorageEvent;
 import org.hunseong.gachaSystem.listener.ClickIconEvent;
-
-//TODO: 로그남기기, API추가, config 빼기, 데이터베이스 구조 다시 짜기, mysql, hikari 지원,
+import org.hunseong.gachaSystem.util.ItemBase64;
 
 public final class GachaSystem extends JavaPlugin implements Listener{
 
@@ -32,6 +32,8 @@ public final class GachaSystem extends JavaPlugin implements Listener{
 
     private static PlayerBoardData playerBoardData;
 
+    private static ItemBase64 itemBase64;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -42,6 +44,7 @@ public final class GachaSystem extends JavaPlugin implements Listener{
         gradeReward = new GradeReward();
         resetRewardBoard = new ResetRewardBoard();
         playerBoardData = new PlayerBoardData();
+        itemBase64 = new ItemBase64();
         saveDefaultConfig();
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new DataStorageEvent(), this);
@@ -92,5 +95,9 @@ public final class GachaSystem extends JavaPlugin implements Listener{
 
     public static PlayerBoardData getPlayerBoardData() {
         return playerBoardData;
+    }
+
+    public static ItemBase64 getItemBase64() {
+        return itemBase64;
     }
 }

@@ -52,20 +52,7 @@ public class ResetRewardBoard {
             int randomIndex = random.nextInt(items.size());
             ItemStack item = items.get(randomIndex);
 
-            //아이템 인코딩 try-with-resources 방식이라 dataOutput.close(); 사용 안해도 됨(자동으로 닫아줌) TODO: util로 따로 빼기
-            String encodedItem = null;
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                 BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
-
-                dataOutput.writeObject(item);
-                //BASE64 인코딩
-                encodedItem = Base64.getEncoder().encodeToString(outputStream.toByteArray());
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            slot.addProperty("item", encodedItem);
+            slot.addProperty("item", GachaSystem.getItemBase64().ItemEncodingBase64(item));
             boardArray.add(slot);
         }
         GachaSystem.getPlayerBoardData().savePlayerBoardData(player, gson.toJson(boardArray));

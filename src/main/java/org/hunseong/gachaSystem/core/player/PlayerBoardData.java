@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
+import org.hunseong.gachaSystem.GachaSystem;
 import org.hunseong.gachaSystem.database.DatabaseManager;
 
 import java.io.ByteArrayInputStream;
@@ -94,13 +95,7 @@ public class PlayerBoardData {
             }
             String encodedItem = slotObject.get("item").getAsString();
 
-            //디코딩 TODO: util로 따로 빼기
-            byte[] data = Base64.getDecoder().decode(encodedItem);
-            try (ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
-                 BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
-
-                return (ItemStack) dataInput.readObject();
-            }
+            return GachaSystem.getItemBase64().ItemDecodingBase64(encodedItem);
         } catch (Exception e) {
             e.printStackTrace();
             player.sendMessage("§c아이템 데이터를 불러오는 중 오류가 발생했습니다.");
