@@ -4,6 +4,7 @@ main: org.hunseong.gachaSystem.GachaSystem
 api-version: '1.21'
 author: Hunseong
 description: i love gacha
+softdepend: ["PlaceholderAPI"]
 
 commands:
   가차:

@@ -1,0 +1,47 @@
+#TODO:서버에 맞게 데이터베이스 구조 변경(mysql,mariaDB지원), 비동기로 최적화, 로그남기기, API추가
+###########################################
+#PAPI 지원
+# %Gacha_Ticket% - 플레이어 티켓 수 papi 입니다.
+
+###########################################
+main-gui:
+  #뽑기판 아이콘
+  reward-icon:
+    material: 'CHEST'
+    custom-model-data: 0
+
+  #뽑기판 경계 아이콘
+  border-icon:
+    material: 'BLACK_STAINED_GLASS_PANE'
+    custom-model-data: 0
+
+  #뽑기판 미리보기 아이콘
+  preview-icon:
+    C:
+      material: 'GRAY_WOOL'
+      custom-model-data: 0
+      grade-color: '&7'
+      #grade-color: '&#FF5555' 헥스코드 형식 지원
+    B:
+      material: 'LIME_WOOL'
+      custom-model-data: 0
+      grade-color: '&a'
+    A:
+      material: 'LIGHT_BLUE_WOOL'
+      custom-model-data: 0
+      grade-color: '&b'
+    S:
+      material: 'PURPLE_WOOL'
+      custom-model-data: 0
+      grade-color: '&5'
+    SS:
+      material: 'ORANGE_WOOL'
+      custom-model-data: 0
+      grade-color: '&6'
+    SSS:
+      material: 'RED_WOOL'
+      custom-model-data: 0
+      grade-color: '&c'
+
+#클릭 사운드
+click-sounds: 'BLOCK_NOTE_BLOCK_PLING'
