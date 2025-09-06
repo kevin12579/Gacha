@@ -8,6 +8,7 @@ import org.hunseong.gachaSystem.GachaSystem;
 
 import java.util.List;
 
+
 public class RewardPreviewGui {
     public Inventory setRewardPreviewGui(Player player, String grade) {
         Inventory inventory = Bukkit.createInventory(player, 9*6, "뽑기판 보상 미리보기 - "+grade);

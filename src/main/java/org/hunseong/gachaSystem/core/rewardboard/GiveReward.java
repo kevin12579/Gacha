@@ -7,11 +7,6 @@ import org.hunseong.gachaSystem.GachaSystem;
 
 public class GiveReward {
 
-    /**
-     * 플레이어의 요청에 따라 뽑기를 수행합니다.
-     * @param player 플레이어 객체
-     * @param slot 클릭한 슬롯 번호 (1~36)
-     */
     public void excuteGacha(Player player, int slot) {
         int tickets = GachaSystem.getPlayerBoardData().getPlayerTicketData(player);
         if (tickets < 1) {
@@ -27,6 +22,8 @@ public class GiveReward {
         ItemStack reward = GachaSystem.getPlayerBoardData().getRewardItemFromSlotNum(player, slot);
         if (reward == null) {
             player.sendMessage("§c해당 슬롯의 아이템을 불러올 수 없습니다. 먼저 보상을 설정해주세요.");
+            player.sendMessage("§c아이템을 전부 설정 후 /가차 초기화 [플레이어]를 통해 초기화를 진행해주세요.");
+            player.sendMessage("§c유저 보상판 데이터에 아이템이 NULL로 설정되어 일어나는 문제입니다.");
             return;
         }
         GachaSystem.getPlayerBoardData().setPlayerTicketData(player, tickets - 1);
@@ -39,23 +36,23 @@ public class GiveReward {
             case "SSS":
                 //보상판 초기화
                 GachaSystem.getResetRewardBoard().resetRewardBoard(player);
-                player.sendMessage("§cSSS보상§f을 획득하셨습니다. 보상판이 §a초기화§f되었습니다.");
-                player.closeInventory();//TODO: 몇초간 보상판 오픈 불가 (성능상 이슈가 있다면)
+                player.sendMessage( GachaSystem.getMainGui().getGradeColor("SSS")+"SSS보상§f을 획득하셨습니다. 보상판이 §a초기화§f되었습니다.");
+                player.closeInventory();
                 return;
             case "SS":
-                message = "§6SS보상§f을 획득하셨습니다.";
+                message = GachaSystem.getMainGui().getGradeColor("SS")+"SS보상§f을 획득하셨습니다.";
                 break;
             case "S":
-                message = "§5S보상§f을 획득하셨습니다.";
+                message = GachaSystem.getMainGui().getGradeColor("S")+"§5S보상§f을 획득하셨습니다.";
                 break;
             case "A":
-                message = "§bA보상§f을 획득하셨습니다.";
+                message = GachaSystem.getMainGui().getGradeColor("A")+"§bA보상§f을 획득하셨습니다.";
                 break;
             case "B":
-                message = "§aB보상§f을 획득하셨습니다.";
+                message = GachaSystem.getMainGui().getGradeColor("B")+"§aB보상§f을 획득하셨습니다.";
                 break;
             case "C":
-                message = "§7C보상§f을 획득하셨습니다.";
+                message = GachaSystem.getMainGui().getGradeColor("C")+"§7C보상§f을 획득하셨습니다.";
                 break;
         }
         player.sendMessage(message);

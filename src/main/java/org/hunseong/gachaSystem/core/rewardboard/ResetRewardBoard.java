@@ -3,6 +3,7 @@ package org.hunseong.gachaSystem.core.rewardboard;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -19,7 +20,7 @@ public class ResetRewardBoard {
     );
 
     //보상판 리셋
-    public void resetRewardBoard(Player player) {
+    public void resetRewardBoard(OfflinePlayer player) {
         //데이터 섞기
         List<String> grades = new ArrayList<>(); //List 가 더 포괄적이라 ArrayList, LinkedList 사용가능, List 메서드 사용
         gradeDistribution.forEach((grade, count) -> {

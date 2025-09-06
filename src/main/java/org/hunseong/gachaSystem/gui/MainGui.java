@@ -18,23 +18,22 @@ import java.util.List;
 import java.util.Map;
 
 public class MainGui {
-
     public Inventory setMainGUI(Player player) {
         Inventory inventory = Bukkit.createInventory(player, 9*6, "뽑기판");
         //미리보기
-        inventory.setItem(0, setPreviewIcon(Material.GRAY_WOOL, "§7C등급 보상", 0));
-        inventory.setItem(1, setPreviewIcon(Material.LIME_WOOL, "§aB등급 보상", 0));
-        inventory.setItem(2, setPreviewIcon(Material.LIGHT_BLUE_WOOL, "§bA등급 보상", 0));
-        inventory.setItem(6, setPreviewIcon(Material.PURPLE_WOOL, "§5S등급 보상", 0));
-        inventory.setItem(7, setPreviewIcon(Material.ORANGE_WOOL, "§6SS등급 보상", 0));
-        inventory.setItem(8, setPreviewIcon(Material.RED_WOOL, "§cSSS등급 보상", 0));
+        inventory.setItem(0, setPreviewIcon("C"));
+        inventory.setItem(1, setPreviewIcon("B"));
+        inventory.setItem(2, setPreviewIcon("A"));
+        inventory.setItem(6, setPreviewIcon("S"));
+        inventory.setItem(7, setPreviewIcon("SS"));
+        inventory.setItem(8, setPreviewIcon("SSS"));
 
         //가림막
-        inventory.setItem(3, setBorderIcon(Material.BLACK_STAINED_GLASS_PANE, "", 0));
-        inventory.setItem(4, setBorderIcon(Material.BLACK_STAINED_GLASS_PANE, "", 0));
-        inventory.setItem(5, setBorderIcon(Material.BLACK_STAINED_GLASS_PANE, "", 0));
+        inventory.setItem(3, setBorderIcon());
+        inventory.setItem(4, setBorderIcon());
+        inventory.setItem(5, setBorderIcon());
         for (int i = 9; i <= 17; i++) {
-            inventory.setItem(i, setBorderIcon(Material.BLACK_STAINED_GLASS_PANE, "", 0));
+            inventory.setItem(i, setBorderIcon());
         }
 
         //남은 등급 개수 확인 해시맵 생성
@@ -72,7 +71,7 @@ public class MainGui {
             if (unlocklist.contains((i - 18))) {
                 inventory.setItem(i, GachaSystem.getPlayerBoardData().getRewardItemFromSlotNum(player, i));
             } else {
-                inventory.setItem(i, setRewardIcon(Material.PAPER, "§e#"+(i - 17)+"번 뽑기", 0, remainingGrades, ticketamount));
+                inventory.setItem(i, setRewardIcon("§e#"+(i - 17)+"번 뽑기", remainingGrades, ticketamount));
             }
         }
         return inventory;
@@ -86,19 +85,22 @@ public class MainGui {
         player.openInventory(setMainGUI(player));
     }
 
-    public ItemStack setRewardIcon(Material material, String name, Integer model_data, Map<String, Integer> remainingGrades, Integer ticketamount) {
+    public ItemStack setRewardIcon(String name, Map<String, Integer> remainingGrades, Integer ticketamount) {
+        Material material = Material.valueOf(GachaSystem.getInstance().getConfig().getString("main-gui.reward-icon.material", "BLACK_STAINED_GLASS_PANE"));
+        int model_data = GachaSystem.getInstance().getConfig().getInt("main-gui.reward-icon.custom-model-data", 0);
+
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
         List<String> lore = new ArrayList<>();
         lore.add("§f");
         lore.add("§f남은 등급 개수:");
-        lore.add(String.format("§cSSS등급§f: §e%d§f개", remainingGrades.get("SSS")));
-        lore.add(String.format("§6SS등급§f: §e%d§f개", remainingGrades.get("SS")));
-        lore.add(String.format("§5S등급§f: §e%d§f개", remainingGrades.get("S")));
-        lore.add(String.format("§bA등급§f: §e%d§f개", remainingGrades.get("A")));
-        lore.add(String.format("§eB등급§f: §e%d§f개", remainingGrades.get("B")));
-        lore.add(String.format("§7C등급§f: §e%d§f개", remainingGrades.get("C")));
+        lore.add(String.format(getGradeColor("SSS")+"SSS등급§f: §e%d§f개", remainingGrades.get("SSS")));
+        lore.add(String.format(getGradeColor("SS")+"SS등급§f: §e%d§f개", remainingGrades.get("SS")));
+        lore.add(String.format(getGradeColor("S")+"S등급§f: §e%d§f개", remainingGrades.get("S")));
+        lore.add(String.format(getGradeColor("A")+"A등급§f: §e%d§f개", remainingGrades.get("A")));
+        lore.add(String.format(getGradeColor("B")+"B등급§f: §e%d§f개", remainingGrades.get("B")));
+        lore.add(String.format(getGradeColor("C")+"C등급§f: §e%d§f개", remainingGrades.get("C")));
         lore.add("§f");
         lore.add("§e현재 보유중인 뽑기권: §a" + ticketamount + "§f개");
         lore.add("§f");
@@ -113,12 +115,14 @@ public class MainGui {
         return item;
     }
 
-    public ItemStack setBorderIcon(Material material, String name, Integer model_data) {
+    public ItemStack setBorderIcon() {
+        Material material = Material.valueOf(GachaSystem.getInstance().getConfig().getString("main-gui.border-icon.material", "BLACK_STAINED_GLASS_PANE"));
+        int model_data = GachaSystem.getInstance().getConfig().getInt("main-gui.border-icon.custom-model-data", 0);
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
         List<String> lore = new ArrayList<>();
-        meta.setDisplayName(name);
+        meta.setDisplayName("");
         meta.setLore(lore);
         meta.setCustomModelData(model_data);
         item.setItemMeta(meta);
@@ -126,7 +130,10 @@ public class MainGui {
         return item;
     }
 
-    public ItemStack setPreviewIcon(Material material, String name, Integer model_data) {
+    public ItemStack setPreviewIcon(String grade) {
+        String path = "main-gui.preview-icon." + grade;
+        Material material = Material.valueOf(GachaSystem.getInstance().getConfig().getString(path + ".material", "BOOK"));
+        int model_data = GachaSystem.getInstance().getConfig().getInt(path + ".custom-model-data", 0);
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
@@ -134,12 +141,17 @@ public class MainGui {
         lore.add("§f");
         lore.add("§f클릭 시 보상 목록을 확인합니다.");
 
-        meta.setDisplayName(name);
+        meta.setDisplayName(getGradeColor(grade)+grade+"등급 보상");
         meta.setLore(lore);
         meta.setCustomModelData(model_data);
 
         item.setItemMeta(meta);
 
         return item;
+    }
+
+    public String getGradeColor(String grade) {
+        String path = "main-gui.preview-icon." + grade;
+        return GachaSystem.getHexColor().hexFormat(GachaSystem.getInstance().getConfig().getString(path + ".grade-color", "&#ffffff"));
     }
 }

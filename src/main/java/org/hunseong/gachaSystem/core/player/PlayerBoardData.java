@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
@@ -19,7 +20,7 @@ import java.util.Base64;
 import java.util.List;
 
 public class PlayerBoardData {
-    public String getPlayerBoardData(Player player) {
+    public String getPlayerBoardData(OfflinePlayer player) {
 
         String sql = "SELECT data FROM player_reward_board WHERE player_uuid = ?";
         try (PreparedStatement statement = DatabaseManager.getInstance().getConnection().prepareStatement(sql)) {
@@ -35,7 +36,7 @@ public class PlayerBoardData {
         return null; // 데이터가 없을 경우
     }
 
-    public void savePlayerBoardData(Player player, String boardData) {
+    public void savePlayerBoardData(OfflinePlayer player, String boardData) {
         int currentTickets = getPlayerTicketData(player);
         String sql = "INSERT OR REPLACE INTO player_reward_board (player_uuid, data, ticket) VALUES (?, ?, ?)";
         try (PreparedStatement statement = DatabaseManager.getInstance().getConnection().prepareStatement(sql)) {
@@ -49,7 +50,7 @@ public class PlayerBoardData {
     }
 
 
-    public Integer getPlayerTicketData(Player player) {
+    public Integer getPlayerTicketData(OfflinePlayer player) {
         String sql = "SELECT ticket from player_reward_board where player_uuid = ?";
         try (PreparedStatement statement = DatabaseManager.getInstance().getConnection().prepareStatement(sql)) {
             statement.setString(1, player.getUniqueId().toString());
@@ -64,7 +65,7 @@ public class PlayerBoardData {
         return 0;
     }
 
-    public void setPlayerTicketData(Player player, int ticket) {
+    public void setPlayerTicketData(OfflinePlayer player, int ticket) {
         String sql = "UPDATE player_reward_board SET ticket = ? WHERE player_uuid = ?";
         try (PreparedStatement statement = DatabaseManager.getInstance().getConnection().prepareStatement(sql)) {
             statement.setInt(1, ticket);
